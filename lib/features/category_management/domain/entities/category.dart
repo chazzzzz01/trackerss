@@ -1,13 +1,32 @@
-class Category {
+import 'package:equatable/equatable.dart';
+
+class Category extends Equatable {
   final String id;
   final String name;
   final String? icon;
   final String? color;
 
-  Category({
+  const Category({
     required this.id,
     required this.name,
     this.icon,
     this.color,
   });
+
+  Category copyWith({
+    String? id,
+    String? name,
+    String? icon,
+    String? color,
+  }) {
+    return Category(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+    );
+  }
+
+  @override
+  List<Object?> get props => [id, name, icon, color];
 }

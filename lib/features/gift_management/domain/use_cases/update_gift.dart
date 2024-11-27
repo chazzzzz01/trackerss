@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../../core/errors/failure.dart';
 import '../entities/gift.dart';
 import '../repositories/gift_repositories.dart';
 
@@ -6,7 +9,7 @@ class UpdateGift {
 
   UpdateGift({required this.repository});
 
-  Future<void> call(Gift gift) async {
-    await repository.updateGift(gift);
+  Future<Either<Failure, void>> call(Gift gift) async =>
+     repository.updateGift(gift);
   }
-}
+

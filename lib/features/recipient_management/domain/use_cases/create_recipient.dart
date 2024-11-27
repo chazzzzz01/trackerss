@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../../core/errors/failure.dart';
 import '../entities/recipient.dart';
 import '../repositories/recipient_repositories.dart';
 
@@ -6,7 +9,7 @@ class CreateRecipient {
 
   CreateRecipient({required this.repository});
 
-  Future<void> call(Recipient recipient) async {
-    await repository.createRecipient(recipient);
+  Future<Either<Failure,void>> call(Recipient recipient) async =>
+    repository.createRecipient(recipient);
   }
-}
+

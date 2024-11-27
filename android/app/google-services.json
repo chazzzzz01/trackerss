@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "719047798352",
+    "project_id": "gifttracker-c8f01",
+    "storage_bucket": "gifttracker-c8f01.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719047798352:android:e41d36db00cf47327deb55",
+        "android_client_info": {
+          "package_name": "com.example.trackerss"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFx7YOgP8ohnqPYeLYiaB6wrLW8jgJzC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

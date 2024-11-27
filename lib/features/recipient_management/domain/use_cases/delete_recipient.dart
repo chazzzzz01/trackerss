@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../../core/errors/failure.dart';
 import '../repositories/recipient_repositories.dart';
 
 class DeleteRecipient {
@@ -5,7 +8,7 @@ class DeleteRecipient {
 
   DeleteRecipient({required this.repository});
 
-  Future<void> call(String id) async {
-    await repository.deleteRecipient(id);
+  Future<Either<Failure, void>> call(String id) async =>
+    repository.deleteRecipient(id);
   }
-}
+

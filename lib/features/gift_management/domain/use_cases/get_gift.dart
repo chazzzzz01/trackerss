@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../../core/errors/failure.dart';
 import '../entities/gift.dart';
 import '../repositories/gift_repositories.dart';
 
@@ -6,7 +9,7 @@ class GetGifts {
 
   GetGifts({required this.repository});
 
-  Future<List<Gift>> call({String? filterBy, String? sortBy}) async {
+  Future<Either<Failure, List<Gift>>> call({String? filterBy, String? sortBy}) async {
     return await repository.getGifts(filterBy: filterBy, sortBy: sortBy);
   }
 }

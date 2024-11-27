@@ -9,6 +9,6 @@ class DeleteGift {
   DeleteGift({required this.repository});
 
   Future<Either<Failure, void>> call(String id) async =>
-    await repository.deleteGift(id);
+     repository.deleteGift(id);
   }
 
