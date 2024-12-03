@@ -1,51 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:trackerss/features/category_management/data/data_source/firebase_category_remote_datasource.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trackerss/core/services/injection_container.dart';
+import 'package:trackerss/features/category_management/presentation/cubit/category_cubit.dart';
+import 'package:trackerss/features/category_management/presentation/view_all_category_page.dart';
 import 'package:trackerss/firebase_options.dart';
-
-import 'features/category_management/domain/entities/category.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
-
-CategoryFirebaseRemoteDataSource dataSource = CategoryFirebaseRemoteDataSource(FirebaseFirestore.instance);
-
-  const category = Category(
-        id: '1',
-        name: 'Test Category',
-        icon: 'test_icon',
-        color: 'blue',
-       
-      );
-
-      await dataSource.createCategory(category);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await init();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Firebase Setup',
+      title: 'Gift Tracker',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Firebase Setup Home Page'),
+      home: const MyHomePage(title: 'Gift Tracker'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
 
   final String title;
 
@@ -54,46 +42,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-     
-      _counter++;
-    });
-  }
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
-      appBar: AppBar(
-       
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-       
-        title: Text(widget.title),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          BlocProvider(
+            create: (context) => serviceLocator<CategoryCubit>(),
+            child: const ViewAllCategoryPage(),
+          ),
+          const Center(
+            child: Text('Insert Gift Page here'),
+          ),
+          const Center(
+            child: Text('Insert Recipient Page here'),
+          ),
+        ],
       ),
-      body: Center(
-        
-        child: Column(
-         
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: "Category",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.redeem),
+            label: "Gift",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: "Recipient",
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

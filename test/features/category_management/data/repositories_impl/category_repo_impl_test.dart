@@ -5,13 +5,15 @@ import 'package:trackerss/core/errors/failure.dart';
 import 'package:trackerss/features/category_management/data/repositories_impl/category_repo_impl.dart';
 import 'package:trackerss/features/category_management/domain/entities/category.dart';
 
+
+
 import 'category_remote_datasource.mock.dart';
 
 
 
 
 
-void main() {
+void main() {  
   late CategoryRepositoryImplementation categoryRepositoryUnderTest;
   late MockCategoryRemoteDataSource mockCategoryRemoteDataSource;
 
@@ -23,9 +25,9 @@ void main() {
   
     const testCategory = Category(
       id: '1',
-      name: 'Test Category',
-      icon: 'test_icon',
-      color: 'blue',
+      name: 'Toy Car',
+      icon: 'Birthday Gift',
+      color: 'Black',
     );
 
   group('createCategory', () {

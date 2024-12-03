@@ -1,3 +1,4 @@
+
 import 'package:equatable/equatable.dart';
 
 class Category extends Equatable {
@@ -9,9 +10,12 @@ class Category extends Equatable {
   const Category({
     required this.id,
     required this.name,
-    this.icon,
     this.color,
+    this.icon,
+    
   });
+
+ 
 
   Category copyWith({
     String? id,

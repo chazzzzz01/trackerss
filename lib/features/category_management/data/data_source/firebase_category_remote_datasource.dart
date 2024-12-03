@@ -51,7 +51,11 @@ class CategoryFirebaseRemoteDataSource implements CategoryRemoteDataSource {
   Future<List<Category>> getCategories() async {
     try {
       final querySnapshot =
-          await _firestore.collection('categories').get();
+          await _firestore.collection('categories')
+          .orderBy('icon', descending: true)
+          
+          
+          .get();
       return querySnapshot.docs.map((doc) {
         final data = doc.data();
         return Category(
