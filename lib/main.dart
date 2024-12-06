@@ -5,6 +5,7 @@ import 'package:trackerss/core/services/injection_container.dart';
 import 'package:trackerss/features/category_management/presentation/cubit/category_cubit.dart';
 import 'package:trackerss/features/category_management/presentation/view_all_category_page.dart';
 import 'package:trackerss/firebase_options.dart';
+import 'package:trackerss/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Gift Tracker',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      themeMode: ThemeMode.light,
+      theme:GlobalThemeData.lightThemeData ,
       home: const MyHomePage(title: 'Gift Tracker'),
       debugShowCheckedModeBanner: false,
     );

@@ -95,13 +95,12 @@ class CategoryCubit extends Cubit<CategoryState> {
   }
 
   // Delete a category
-  Future<void> deleteCategory(String categoryId) async {
+  Future<void> deleteCategory(Category category) async {
     emit(CategoryLoading());
 
     try {
-      final Either<Failure, void> result = await deleteCategoryUseCase
-          .call(categoryId)
-          .timeout(const Duration(seconds: 10),
+      final Either<Failure, void> result = await deleteCategoryUseCase(category.id).timeout(
+           const Duration(seconds: 10),
               onTimeout: () => throw TimeoutException("Request timed out"));
 
       result.fold(

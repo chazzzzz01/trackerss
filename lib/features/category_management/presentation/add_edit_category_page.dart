@@ -32,6 +32,8 @@ class AddEditCategoryPage extends StatefulWidget {
 
 class _AddEditCategoryPageState extends State<AddEditCategoryPage> {
   final _formkey = GlobalKey<FormBuilderState>();
+  bool _isPerforming = false;
+
 
 
   @override
@@ -55,10 +57,28 @@ class _AddEditCategoryPageState extends State<AddEditCategoryPage> {
 
     return BlocListener<CategoryCubit, CategoryState>(
   listener: (context, state) {
+    if (state is CategoryAdded) {
+      Navigator.pop(context, "Category Added");
+    }
+     else if (state is CategoryError) {
+      final snackBar = SnackBar(
+        content: Text(state.message),
+        duration: const Duration(seconds: 5),
+        );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      setState(() {
+        _isPerforming = false;
+      });
+    }
+    else if (state is CategoryUpdated) {
+       Navigator.pop(context, state.newCategory);
+    }
+     else if (state is CategoryDeleted) {
+          Navigator.pop(context, "Category Deleted Successfully.");
+        }
 
   },
   child: Scaffold(
-      
       appBar: AppBar(
         title: Text(appBarTitle),
         ),
@@ -69,7 +89,7 @@ class _AddEditCategoryPageState extends State<AddEditCategoryPage> {
           key: _formkey,
           initialValue: initialValues,
           child: ListView(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             children: [
               FormBuilderTextField(
                 name: 'name', 
@@ -84,8 +104,13 @@ class _AddEditCategoryPageState extends State<AddEditCategoryPage> {
                keyboardType: TextInputType.text,
                validator: FormBuilderValidators.compose([
                 FormBuilderValidators.required(),  
-                FormBuilderValidators.alphabetical(),  
-                FormBuilderValidators.alphabetical(),  
+                  (value) {
+      // Custom validation logic for general text
+      if (value != null && value.isNotEmpty && value.contains(RegExp(r'[^\w\s]'))) {
+        return 'Text should not contain special characters.';
+      }
+      return null;
+    }
                 //  FormBuilderValidators.maxLength(100), 
 
                 ]),
@@ -155,11 +180,19 @@ class _AddEditCategoryPageState extends State<AddEditCategoryPage> {
            const SizedBox(width: 16.0),
            Expanded(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: _isPerforming? null : () {
                 bool isValid = _formkey.currentState!.validate();
                 final inputs = _formkey.currentState!.instantValue;
 
                 if (isValid) {
+                  setState(() {
+                    _isPerforming = true;
+
+                  });
+
+
+
+
                   final newCategory =
                    Category(
                     id: widget.category?.id?? "",
@@ -181,7 +214,13 @@ class _AddEditCategoryPageState extends State<AddEditCategoryPage> {
                 }
               }, 
               child:
-               Text(buttonLabel),
+               _isPerforming ? 
+               const SizedBox(
+                width: 16, 
+                height: 16, 
+                child: CircularProgressIndicator(), 
+                ) 
+                : Text(buttonLabel),
                ),),
            ],),
         ),

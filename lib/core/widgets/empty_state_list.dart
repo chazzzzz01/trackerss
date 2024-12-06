@@ -39,7 +39,7 @@ class EmptyStateList extends StatelessWidget {
             ),
             const SizedBox(height: 16,
             ),
-            Text(title),
+            Text(title,),
             const SizedBox(height: 16,
             ),
              Text(description),

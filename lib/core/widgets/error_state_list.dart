@@ -38,7 +38,10 @@ class ErrorStateList extends StatelessWidget {
           children: [
             Image.asset(imageAssetName, height: 100, width: 100),
             const SizedBox(height: 16),
-            const Text("Something went wrong..."),
+            const Text("Something went wrong...",
+              style: TextStyle(fontSize: 18),
+            
+            ),
             const SizedBox(height: 16),
             Text(
               errorMessage,

@@ -4,9 +4,11 @@ import 'package:trackerss/core/services/injection_container.dart';
 import 'package:trackerss/core/widgets/empty_state_list.dart';
 import 'package:trackerss/core/widgets/error_state_list.dart';
 import 'package:trackerss/core/widgets/loading_state_shimmer_list.dart';
-import 'package:trackerss/features/category_management/presentation/add_edit_category_page.dart';
+ import 'package:trackerss/features/category_management/presentation/add_edit_category_page.dart';
 import 'package:trackerss/features/category_management/presentation/cubit/category_cubit.dart';
 import 'package:trackerss/features/category_management/presentation/view_category_page.dart';
+
+
 
 class ViewAllCategoryPage extends StatefulWidget {
   const ViewAllCategoryPage({super.key});
@@ -36,8 +38,8 @@ class _ViewAllCategoryPageState extends State<ViewAllCategoryPage> {
           } else if (state is CategoryLoaded) {
             if (state.categories.isEmpty) {
               return const EmptyStateList(
-                imageAssetName: 'assets/images/empty.png',
-                title: 'Oops... There are no expenses here ',
+                imageAssetName: 'assets/images/designer.png',
+                title: 'Oops... There are no categories here ',
                 description: "Tap '+' button to add a new category",
               );
             }
@@ -50,13 +52,25 @@ class _ViewAllCategoryPageState extends State<ViewAllCategoryPage> {
                   child: ListTile(
                     title: Text("Occasion ${currentCategory.icon}"),
                     subtitle: Text(currentCategory.name),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                    final result  = await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ViewCategoryPage(category: currentCategory),
+                            builder: (context) => BlocProvider(
+                              create: (context) => serviceLocator<CategoryCubit>(),
+                              child:ViewCategoryPage(category: currentCategory),
+                            ),
                           ));
+                      context
+                      .read<CategoryCubit>()
+                      .getAllCategories();
+
+                    
+              if (result.runtimeType == String) {
+                final snackBar = SnackBar(content: Text(result));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+
                     },
                   ),
                 );
@@ -72,8 +86,8 @@ class _ViewAllCategoryPageState extends State<ViewAllCategoryPage> {
             );
           } else {
             return const EmptyStateList(
-              imageAssetName: 'assets/images/empty.png',
-              title: 'Oops... There are no expenses here ',
+              imageAssetName: 'assets/images/Designer.png',
+              title: 'Oops... There are no categories here ',
               description: "Tap '+' button to add a new category",
             );
           }
